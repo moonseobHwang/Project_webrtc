@@ -1,0 +1,12 @@
+body{
+    color:#0000ff;
+    background-color:#dddddd;
+    font-size:11pt;
+}
+textarea {
+    width:100%;
+}
+
+input[type=submit] {
+    margin-top:10px;
+}
