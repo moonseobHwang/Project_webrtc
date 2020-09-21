@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+</head>
+<style>
+.box{
+  float:left; width:200px; height:200px; margin:10px; background:#b0ddf4; border-radius:30px
+}
+.img{
+    position: relative;
+    background-image: url(./IMG01.jpeg);
+    height: 90vh;
+    background-size: cover;
+  }
+.img-cover1{
+   position: absolute;
+   height: 60%;
+   width: 100%;
+   background-color: rgba(0, 0, 0, 0.4);
+   z-index:1;
+  }
+.img .title{
+     position: absolute;
+     top:40%;
+     left:50%;
+     transform: translate(-50%, -50%);
+     font-size:6.5rem;
+     color: white;
+     z-index: 2;
+     text-align: center;
+}
+.img .content1{
+     position: absolute;
+     top:60%;
+     left:50%;
+     transform: translate(-50%, -50%);
+     font-size:5rem;
+     color: white;
+     z-index: 2;
+     text-align: center;
+}
+.img .box1{
+     position: absolute;
+     top:80%;
+     left:30%;
+     transform: translate(-50%, -50%);
+     font-size:5rem;
+     color: white;
+     z-index: 2;
+     text-align: center;
+}
+.img .box2{
+     position: absolute;
+     top:80%;
+     right:15%;
+     transform: translate(-50%, -50%);
+     font-size:5rem;
+     color: white;
+     z-index: 2;
+     text-align: center;
+}
+.footer {
+  text-align: right;
+  padding: 3px;
+  color: grey;
+}
+a:link{text-decoration: none;color:white}
+a:visited{text-decoration: none;color:white}
+a:hover{text-decoration: none;color:#3479AE}
+}
+</style>
+
+<body>
+    <div class="img">
+        <div class="title">
+            <h2 >WebRTC</h2>
+        </div>
+        <div class="box1">
+           <p style ="font-size:120%"><a href="http:\\localhost:8000"> SNAP </p></a>
+        </div>
+        <div class="box2">
+           <p style ="font-size:120%"><a href="http:\\localhost:8000/board"> BOARD </p></a>
+        </div>
+        <div class="img-cover1"></div>
+    </div>
+  <footer>
+  <p style=" text-align: center; font-size:22px; color:#3479AE; font-family:arial; letter-spacing: 20px; Line-height:10px">
+    PROJECT NO.1 </p>
+  <p style="text-align: center;font-size:18px; color:grey; font-family:arial; letter-spacing: 10px; Line-height:10px">
+  T. FIVE<br>
+
+  </footer>
+
+
+</body>
+</html>

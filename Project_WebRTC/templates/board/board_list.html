@@ -1,0 +1,198 @@
+<!-- ---------------------------------------- [edit] ---------------------------------------- -->
+{% extends 'base.html' %}
+{% block content %}
+<!-- ---------------------------------------------------------------------------------------- -->
+
+
+<div class="container" style="margin-top:20px">
+  <h2>스냅샷 목록</h2>
+  <p></p>
+
+  <form name="form">
+	<input type="hidden" name="page" value="{{ page }}">
+	<input type="hidden" name="sel" id="sel" value="{{sel}}">
+
+  <div class="input-group mt-3 mb-3">
+  <div class="input-group-prepend">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" id="searchItem">
+     	  전체
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#" onclick="changeSearch('1')">전체</a>
+      <a class="dropdown-item" href="#" onclick="changeSearch('2')">주소</a>
+      <a class="dropdown-item" href="#" onclick="changeSearch('3')">날짜</a>
+      <a class="dropdown-item" href="#" onclick="changeSearch('4')">IP</a>
+      <a class="dropdown-item" href="#" onclick="changeSearch('5')">Drone ID</a>
+    </div>
+  </div>
+  <input type="text" class="form-control" name="key" id="key" value="{{key}}" placeholder="검색어를 입력하세요">
+  <div class="input-group-append">
+    <button class="btn btn-success" type="button" onclick="goSearch()">Go</button>
+  </div>
+</div>
+
+<div class="container" style="text-align:right">
+  <div class="btn-group">
+    <button type="button" class="btn btn-danger btn-sm" onclick="goDeleteAll()">삭제</button>
+  </div>
+</div><br>
+
+  <table class="table">
+  	<colgroup>
+      <col width="5%"/>
+      <col width="10%"/>
+  		<col width="*">
+  		<col width="15%"/>
+  		<col width="15%"/>
+  		<col width="15%"/>
+  	</colgroup>
+    <thead class="table-primary">
+      <tr>
+        <th><input type='checkbox' onchange='checkAll(this)'></th>
+        <th>번호</th>
+        <th>스냅샷</th>
+        <th>드론ID</th>
+        <th>IP</th>
+        <th>일시</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% if board_list %}
+        {% for board in board_list %}
+        <tr>
+            <td><input type='checkbox' name='del' class='del' value='{{board.id}}'></td>
+            <td>{{ board.id }}</td>
+            <td>
+              <a href="/board/view/{{board.id}}/{{page}}">
+              <img src="\{{ board.path }}\{{ board.filename }}" width="300px" height="120px"></a>
+            </td>
+            <td>{{ board.drone }}</td>
+            <td>{{ board.ip }}</td>
+            <td>{{ board.datetime }}</td>
+        </tr>
+        {% endfor %}
+      {% else %}
+        <tr>
+            <td colspan="3">텅텅 비었네요~~</td>
+        </tr>
+      {% endif %}
+      </tr>
+    </tbody>
+  </table>
+
+  {% include "../paging.html" %}
+
+
+	<div class="container" style="text-align:right">
+	  <div class="btn-group">
+	    <button type="button" class="btn btn-danger btn-sm" onclick="goDeleteAll()">삭제</button>
+	  </div>
+	</div>
+
+
+</form>
+</div>
+
+<script>
+  window.onload=goInit();
+
+  function goInit()
+  {
+    var key ='1';
+    var sel ='1';
+
+    console.log(sel);
+    changeSearch(sel);
+    // document.getElementById("key").value = key;
+  }
+
+  function goPage(page)
+  {
+    frm = document.form;
+    frm.page.value=page;
+    frm.action="/board/list";
+    frm.submit();
+  }
+
+  function goWrite()
+  {
+    frm = document.form;
+    frm.action="/board/write";
+    frm.submit();
+  }
+
+  function goSearch()
+  {
+    sel = document.getElementById("sel").value;
+
+    frm = document.form;
+    frm.action="/board/search";
+    frm.submit();
+  }
+
+  function changeSearch(sel)
+  {
+    document.getElementById("sel").value = sel;
+
+    if(sel=="1")
+      sel="전체";
+    else if(sel=="2")
+      sel ="주소";
+    else if(sel=="3")
+      sel ="날짜";
+    else if(sel=="4")
+      sel ="IP";
+    else if(sel=="5")
+      sel ="Drone ID";
+
+    document.getElementById("searchItem").innerHTML = sel;
+  }
+
+  {% comment %} function goView() {
+    frm = document.form;
+    frm.action="/board/view/?page={{page}}";
+    frm.submit();
+  } {% endcomment %}
+  // Set check or unchecked all checkboxes
+  function checkAll(e) {
+    var checkboxes = document.getElementsByName('del');
+
+    if (e.checked) {
+      for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = true;
+      }
+    } else {
+      for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].checked = false;
+      }
+    }
+  }
+
+  function goDeleteAll()
+  {
+    var c = $('.del:checked');
+    if (c.length > 0) {
+      var arr = new Array();
+      if (confirm("정말 삭제하시겠습니까?")) {
+        for (var i=0; i < c.length; i++) {
+          arr.push(c[i].value)
+        }
+        console.log(arr);
+      }
+      var myJSON = JSON.stringify(arr);
+
+      $.ajax({
+        url:'/board/delete/',
+        type:'POST',
+        data: {'myJSON':myJSON}
+      }).done(function(data) {
+          location.reload();
+      })
+    }
+  }
+  </script>
+
+
+{% endblock %}
+

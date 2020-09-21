@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Realtime communication with WebRTC</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+
+  <style>
+    div {
+      margin-top: 10px;
+      margin-bottom: 10px;
+      margin-right: 150px;
+      margin-left: 80px;
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <!--{%csrf_token%}-->
+  <div><h1>Realtime communication with WebRTC</h1></div>
+  <div id="videoCanvas">
+    <video id="camera" autoplay playsinline></video>
+    <canvas id="photo"></canvas>
+  </div>
+
+<!-- 촬영시작 : 버튼누르면 5초나 3초 단위로 gps 정보 얻고 화면 캡쳐해서 서버로 보낸다.
+    시간단위 선택할 수 있게 (자바스크립트에 setTimer 검색) -->
+  <div id="buttons">
+    <table>
+    <tr>
+      <td><button type="button" id="snapAndSend" class="btn btn-warning btn-lg">Snap &amp; Send</button></td>
+      <td><button type="button" id="stop" class="btn btn-danger btn-lg">Stop to Snap</button></td>
+      <div class="form-group">
+        <td>
+        <select class="form-control-lg" id="interval">
+          <option value=3>3sec</option>
+          <option value=5>5sec</option>
+        </select>
+        </td>
+      </tr>
+      </table>
+    </div>
+  </div>
+
+  <div>
+  <p id="xy"></p>
+  <p id="loc"></p>
+  </div>
+
+  <!--
+  <div id="incoming">
+    <h2>Incoming photos</h2>
+    <div id="trail"></div>
+  </div>
+  -->
+  <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+  <script src="{% static 'js/main.js' %}"></script>
+
+<script>
+  // jquery - 모든 작업이 완료되면 여기가 호출된다.
+  $(document).ready(function(){
+    console.log("ddd")
+    grabWebCamVideo();  // 비디오 스트림 얻는 작업 함수 호출
+  });
+</script>
+
+
+</body>
+
+</html>

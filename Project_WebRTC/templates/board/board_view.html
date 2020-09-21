@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container" style="margin-top:20px">
+  <h2>스냅샷 상세보기</h2>
+  <p></p>
+  <form name="form">
+	  <input type="hidden" name="page" value="{{page}}">
+
+  <table class="table">
+  	<colgroup>
+  		<col width="20%"/>
+  		<col width="*"/>
+  	</colgroup>
+
+    <tbody>
+      <tr>
+      	<td>번호</td>
+        <td>{{board.id}}
+  		</td>
+     </tr>
+      <tr >
+        <td>스냅샷</td>
+        <td><img src="\{{ board.path }}\{{ board.filename }}" width="100%" height="100%"></td>
+
+      </tr>
+      <tr >
+        <td>드론ID</td>
+        <td>{{board.drone}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>이미지 경로</td>
+        <td>{{board.path}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>이미지 파일이름</td>
+        <td>{{board.filename}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>촬영 일시</td>
+        <td>{{board.datetime}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>GPS 좌표</td>
+        <td>위도 : {{board.latitude}}<br>경도 : {{board.longitude}}
+        </td>
+      </tr>
+
+      <tr>
+        <td>주소</td>
+        <td>{{board.address}}
+        </td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td><div id="map" style="width:700px;height:400px;"></div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f9f055b3897e6f82819063824e6e8c1f"></script>
+	<script>
+		var container = document.getElementById('map');
+		var options = {
+			center: new kakao.maps.LatLng(33.450701, 126.570667),
+			level: 3
+		};
+
+		var map = new kakao.maps.Map(container, options);
+
+    var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667);
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({
+        position: markerPosition
+    });
+
+    // 마커가 지도 위에 표시되도록 설정합니다
+    marker.setMap(map);
+	</script>
+
+  	<div class="container" style="text-align:right">
+	  <div class="btn-group">
+
+	    <!--<button type="button" class="btn btn-primary" onclick="goModify()">수정</button>&nbsp;&nbsp;-->
+	    <button type="button" class="btn btn-danger"  onclick="goDelete()">삭제</button>&nbsp;&nbsp;
+		  <button type="button" class="btn btn-primary" onclick="goList()">목록</button>
+	  </div>
+	</div>
+</form>
+</div>
+
+
+<script>
+function goModify(){
+  //document-html 문서를 말하고 document에 name속성이 form인 객체를 가져와라
+  frm = document.form;
+  frm.action="/board/modify/{{board.id}}";
+  frm.method="get";
+  frm.submit();
+}
+
+function goPage(page)
+{
+  frm = document.form;
+  frm.page.value=page;
+  frm.action="/board/list";
+  frm.submit();
+}
+
+
+function goList(){
+
+  //location.href="/board/list/?page={{page}}"; //get방식으로 페이지 넘길때
+  frm = document.form;
+  frm.action="/board/list";
+  frm.method="get";
+  frm.submit();
+
+}
+
+function goDelete()
+{
+  if (confirm("정말 삭제하시겠습니까?")) {
+    frm = document.form;
+    frm.action="/board/delete/{{board.id}}";
+    frm.method="get";
+    frm.submit();
+  }
+}
+
+</script>
+
+{% endblock %}
